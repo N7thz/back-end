@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put } from "@nestjs/common"
+import { Body, Controller, Get, Param, Put, Query } from "@nestjs/common"
 import { UserService } from "./user.service";
 import { UpdateUserProps } from "@/schemas/update-user-schema";
 
@@ -8,8 +8,11 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @Get(":id")
-    async findById(@Param("id") id: string) {
-        return await this.userService.findById(id)
+    async findById(
+        @Query("type") type: "simple" | "complete",
+        @Param("id") id: string
+    ) {
+        return await this.userService.findById({ id, type })
     }
 
     @Get()
@@ -20,8 +23,8 @@ export class UserController {
     @Put(":id")
     async update(
         @Param("id") id: string,
-        @Body() { email }: UpdateUserProps
+        @Body() { email, imageUrl }: UpdateUserProps
     ) {
-        return this.userService.update({ id, email })
+        return this.userService.update({ id, email, imageUrl })
     }
 }

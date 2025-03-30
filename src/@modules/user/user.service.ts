@@ -3,7 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from "@nestjs/common"
-import { UserRepository } from "./user.repository"
+import { FindByIdRequest, UserRepository } from "./user.repository"
 import {
 	UpdateUserProps, UpdateUserSchema
 } from "@/schemas/update-user-schema"
@@ -47,9 +47,11 @@ export class UserService {
 		return new UserResponse(user)
 	}
 
-	async findById(id: string) {
+	async findById({ id, type }: FindByIdRequest) {
 
-		const user = await this.validateId({ id })
+		await this.validateId({ id })
+
+		const user = this.userRepository.findById({ id, type })
 
 		return user
 	}
@@ -100,7 +102,7 @@ export class UserService {
 		message = notFoundExceptionMessage,
 	}: ValidateIdProps) {
 
-		const user = await this.userRepository.findById(id)
+		const user = await this.userRepository.findById({ id })
 
 		if (!user) {
 			throw new NotFoundException(message)

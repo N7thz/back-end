@@ -17,7 +17,7 @@ export class AuthenticateService {
 	) { }
 
 	async login({ email, password }: LoginProps) {
-		
+
 		const user = await this.userService.findByEmail(email)
 
 		const { compare } = new Hash()
@@ -47,6 +47,6 @@ export class AuthenticateService {
 
 		const { sub: { id } } = request.user as UserPayload
 
-		return await this.userService.findById(id)
-	}	
+		return await this.userService.findById({ id })
+	}
 }
