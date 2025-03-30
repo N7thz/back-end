@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  password     String
+  imageUrl     String?        @map("image_url")
+  isActive     Boolean        @default(true) @map("is_active")
+  createdAt    DateTime       @default(now()) @map("create_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  role         Role           @default(CLIENT)
+  UserTraining UserTraining[]
+
+  @@map("users")
+}
+
+model Training {
+  id           String         @id @default(uuid())
+  name         String
+  obs          String?
+  madeAt       DateTime       @default(now()) @map("made_at")
+  updatedAt    DateTime       @default(now()) @updatedAt @map("updated_at")
+  exercises    Exercise[]
+  UserTraining UserTraining[]
+
+  @@map("trainings")
+}
+
+model UserTraining {
+  id         String   @id @default(uuid())
+  userId     String
+  trainingId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@map("user_trainings")
+}
+
+model Exercise {
+  id         String    @id @default(uuid())
+  name       String
+  series     Int
+  reps       Int
+  toFailure  Boolean   @default(false) @map("to_failure")
+  trainingId String?   @map("training_id")
+  Training   Training? @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@map("exercises")
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}

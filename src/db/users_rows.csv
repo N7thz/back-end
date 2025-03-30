@@ -1,0 +1,2 @@
+id,name,email,password,image_url,is_active,role,created_at,updated_at
+5e12cb0a-9f54-4531-8085-1b23864193e9,Nathan Ferreira,nathanzero14@gmail.com,$2a$08$33bOpz.iHYSwan/22DztCOb8Vh9ek8aTT1UrsEXSCJTW9Zr2RqUdK,,true,ADMIN,2025-02-26 20:49:21,2025-02-26 20:49:22
