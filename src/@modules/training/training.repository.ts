@@ -1,6 +1,6 @@
-import { PrismaService } from "@/prisma/prisma.service";
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
+import { PrismaService } from "@/prisma/prisma.service"
+import { Injectable } from "@nestjs/common"
+import { Prisma } from "@prisma/client"
 
 export type CreateInput = Prisma.TrainingCreateInput & {
     createManyExerciseInput: Prisma.ExerciseCreateManyInput[]
@@ -97,11 +97,13 @@ export class TrainingRepository {
         const trainings = await this.prisma.training.findMany({
             where: {
                 UserTraining: {
-                    
+                    some: {
+                        userId: id
+                    }
                 }
             },
             orderBy: {
-                madeAt: "desc"
+                madeAt: "asc"
             },
             include: {
                 exercises: true,

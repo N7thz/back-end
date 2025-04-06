@@ -1,9 +1,12 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+    BadRequestException, Injectable, NotFoundException
+} from "@nestjs/common"
 import {
     CreateInput, TrainingRepository, UpdateInput
-} from "./training.repository";
-import { ValidateIdProps } from "@/@types";
-import { UserTrainingService } from "../user-training/user-training.service";
+} from "./training.repository"
+import { Payload, ValidateIdProps } from "@/@types"
+import { UserTrainingService } from "../user-training/user-training.service"
+import { Request } from "express"
 
 const notFoundExceptionMessage = "Não foi possivel encontrar o usuário desejado"
 
@@ -65,7 +68,12 @@ export class TrainingService {
         return training
     }
 
-    async findManyByUserId(userId: string) {
+    async findManyByUserId(request: Request) {
+
+        if (!request.user) throw new NotFoundException("User not found")
+
+        const { sub: { id: userId } } = request.user as Payload
+
         return await this.trainingRepository.findManyByUserId(userId)
     }
 

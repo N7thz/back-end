@@ -1,7 +1,7 @@
-import { ZodValidationPipe } from "@/common/pipes/zod-validation.pipe";
+import { ZodValidationPipe } from "@/common/pipes/zod-validation.pipe"
 import {
 	CreateAccountProps, CreateAccountSchema
-} from "@/schemas/create-account-schema";
+} from "@/schemas/create-account-schema"
 import {
 	Body,
 	Controller,
@@ -9,9 +9,9 @@ import {
 	HttpStatus,
 	Post,
 	UsePipes,
-} from "@nestjs/common";
-import { UserService } from "../user/user.service";
-import { Public } from "@/common/decorators/public.decorator";
+} from "@nestjs/common"
+import { UserService } from "../user/user.service"
+import { Public } from "@/common/decorators/public.decorator"
 
 @Controller("create-account")
 export class CreateAccountController {

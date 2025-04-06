@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post, Req, UnauthorizedException } from "@nestjs/common";
-import { TrainingService } from "./training.service";
-import { CreateTrainingProps } from "@/schemas/create-training-schema";
+import { Body, Controller, Get, Param, Post, Req, UnauthorizedException } from "@nestjs/common"
+import { TrainingService } from "./training.service"
+import { CreateTrainingProps } from "@/schemas/create-training-schema"
 import { Request } from "express"
-import { Acess, UserRole } from "@/common/decorators/acess.decorator";
-import { Payload } from "@/@types";
+import { Acess, UserRole } from "@/common/decorators/acess.decorator"
+import { Payload } from "@/@types"
 
 @Acess(UserRole.CLIENT, UserRole.ADMIN)
 @Controller("trainings")
@@ -26,6 +26,11 @@ export class TrainingController {
             ...data,
             createManyExerciseInput: exercises
         })
+    }
+
+    @Get()
+    async findAll(@Req() request: Request) {
+        return await this.trainingService.findManyByUserId(request)
     }
 
     @Get(":id")

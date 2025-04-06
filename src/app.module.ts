@@ -16,10 +16,11 @@ import { AuthenticateService } from "./@modules/authenticate/authenticate.servic
 import { CreateAccountController } from "./@modules/create-account/create-account.controller"
 import { UserController } from "./@modules/user/user.controller"
 import { TrainingController } from "./@modules/training/training.controller"
-import { TrainingService } from "./@modules/training/training.service";
-import { TrainingRepository } from "./@modules/training/training.repository";
-import { UserTrainingRepository } from "./@modules/user-training/user-training.repository";
-import { UserTrainingService } from "./@modules/user-training/user-training.service";
+import { TrainingService } from "./@modules/training/training.service"
+import { TrainingRepository } from "./@modules/training/training.repository"
+import { UserTrainingRepository } from "./@modules/user-training/user-training.repository"
+import { UserTrainingService } from "./@modules/user-training/user-training.service"
+import { UpdateImageController } from './@modules/update-image/update-image.controller';
 
 @Module({
 	imports: [
@@ -35,7 +36,8 @@ import { UserTrainingService } from "./@modules/user-training/user-training.serv
 		AuthenticateController,
 		CreateAccountController,
 		UserController,
-		TrainingController
+		TrainingController,
+		UpdateImageController
 	],
 	providers: [
 		{

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Put, Query } from "@nestjs/common"
-import { UserService } from "./user.service";
-import { UpdateUserProps } from "@/schemas/update-user-schema";
+import { UserService } from "./user.service"
+import { UpdateUserProps } from "@/schemas/update-user-schema"
 
 @Controller("users")
 export class UserController {

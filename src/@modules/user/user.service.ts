@@ -10,6 +10,8 @@ import {
 import { UserResponse } from "@/entities/user-response"
 import { Prisma } from "@prisma/client"
 import { Hash } from "@/entities/hash"
+import { Request } from "express"
+import { ValidateRequest } from "@/utils/validate-request"
 
 export type ValidateIdProps = {
 	id: string
@@ -18,6 +20,11 @@ export type ValidateIdProps = {
 
 type UpdateUserBody = UpdateUserProps & {
 	id: string
+}
+
+type UpdateImageProps = {
+	request: Request
+	imageUrl: string
 }
 
 const notFoundExceptionMessage = "Não foi possivel encontrar o usuário desejado"
@@ -75,6 +82,18 @@ export class UserService {
 		})
 
 		return new UserResponse(user)
+	}
+
+	async updateImage({ request, imageUrl }: UpdateImageProps) {
+
+		const { validate } = new ValidateRequest()
+
+		const id = validate(request)
+
+		return await this.userRepository.updateImage({
+			id,
+			imageUrl
+		})
 	}
 
 	async userAlreadyExist(email: string) {

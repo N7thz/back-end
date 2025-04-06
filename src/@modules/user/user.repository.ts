@@ -11,7 +11,7 @@ type UserUpdateInput = Prisma.UserUpdateInput & {
     id: string
 }
 
-export type UpdateImage = {
+export type UpdateImageProps = {
     id: string
     imageUrl: string
 }
@@ -36,7 +36,7 @@ export class UserRepository {
         })
     }
 
-    async updateImage({ id, imageUrl }: UpdateImage) {
+    async updateImage({ id, imageUrl }: UpdateImageProps) {
         return await this.prisma.user.update({
             where: {
                 id
