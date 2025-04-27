@@ -1,14 +1,19 @@
-import { z } from 'zod'
+import { z } from "zod"
 
-export const editTrainingSchema = z.object({
-    name: z.string().nullable(),
-    obs: z.string().nullable(),
-    exercises: z.array(z.object({
-        name: z.string().nullable(),
-        series: z.string().transform(Number).nullable(),
-        reps: z.string().transform(Number).nullable(),
-        toFailure: z.boolean().nullable(),
-    })),
-})    
+const exerciseSchema = z.object({
+    id: z.string().uuid().optional(),
+    name: z.string(),
+    series: z.any().transform(Number),
+    reps: z.any().transform(Number),
+    toFailure: z.boolean(),
+})
 
-export type EditTrainingProps = z.infer<typeof editTrainingSchema>
+export const updateTrainingSchema = z.object({
+    name: z.string().optional(),
+    obs: z.string().optional(),
+    exercises: z.array(exerciseSchema),
+})
+
+export type ExerciseProps = z.infer<typeof exerciseSchema>[]
+
+export type UpdateTrainingProps = z.infer<typeof updateTrainingSchema>

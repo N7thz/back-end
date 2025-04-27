@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post, Req, UnauthorizedException } from "@nestjs/common"
+import { Body, Controller, Get, Param, Post, Put, Req, UnauthorizedException } from "@nestjs/common"
 import { TrainingService } from "./training.service"
 import { CreateTrainingProps } from "@/schemas/create-training-schema"
 import { Request } from "express"
 import { Acess, UserRole } from "@/common/decorators/acess.decorator"
 import { Payload } from "@/@types"
+import { UpdateTrainingProps } from "@/schemas/edit-training-schema"
 
 @Acess(UserRole.CLIENT, UserRole.ADMIN)
 @Controller("trainings")
@@ -36,5 +37,13 @@ export class TrainingController {
     @Get(":id")
     async findById(@Param("id") id: string) {
         return await this.trainingService.findById(id)
+    }
+
+    @Put(":id")
+    async update(
+        @Param("id") id: string,
+        @Body() training: UpdateTrainingProps
+    ) {
+        return await this.trainingService.update({ id, training })
     }
 }

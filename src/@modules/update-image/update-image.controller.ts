@@ -1,7 +1,7 @@
-import { Body, Controller, Put, Req, UsePipes } from "@nestjs/common";
-import { UserService } from "../user/user.service";
+import { Body, Controller, Put, Req, UsePipes } from "@nestjs/common"
+import { UserService } from "../user/user.service"
 import { Request } from "express"
-import { ZodValidationPipe } from "@/common/pipes/zod-validation.pipe";
+import { ZodValidationPipe } from "@/common/pipes/zod-validation.pipe"
 import { type UploadImageProps, UploadImageSchema } from "@/schemas/upload-image-schema"
 
 @Controller("update-image")

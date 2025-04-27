@@ -8,7 +8,7 @@ export type CreateInput = Prisma.TrainingCreateInput & {
 
 export type UpdateInput = {
     id: string
-    data: Prisma.TrainingUpdateInput
+    training: Omit<Prisma.TrainingUpdateInput, "exercises">
 }
 
 export type FindSameNameAndDayInput = {
@@ -21,10 +21,10 @@ export class TrainingRepository {
 
     constructor(private prisma: PrismaService) { }
 
-    async create({ createManyExerciseInput, ...data }: CreateInput) {
+    async create({ createManyExerciseInput, ...training }: CreateInput) {
         return await this.prisma.training.create({
             data: {
-                ...data,
+                ...training,
                 exercises: {
                     createMany: {
                         data: createManyExerciseInput
@@ -37,12 +37,15 @@ export class TrainingRepository {
         })
     }
 
-    async update({ id, data, }: UpdateInput) {
+    async update({ id, training }: UpdateInput) {
         return await this.prisma.training.update({
             where: {
                 id,
             },
-            data
+            data: training,
+            include: {
+                exercises: true
+            }
         })
     }
 
@@ -57,9 +60,7 @@ export class TrainingRepository {
     async findById(id: string) {
         return await this.prisma.training.findUnique({
             where: { id },
-            include: {
-                exercises: true,
-            }
+            include: { exercises: true }
         })
     }
 

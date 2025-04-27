@@ -4,7 +4,7 @@ import { EnvService } from "./env/env.service"
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
-		logger: ["error", "warn"],
+		logger: ["error", "warn", "debug", "verbose"],
 	})
 
 	app.enableCors({ origin: "*" })
@@ -13,6 +13,8 @@ async function bootstrap() {
 	const envService = app.get(EnvService)
 	const port = envService.get("PORT")
 
-	await app.listen(port).then(() => console.log("server is running..."))
+	await app
+		.listen(port)
+		.then(() => console.log(`server is running in ${port}`))
 }
 bootstrap()

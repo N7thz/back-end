@@ -20,7 +20,12 @@ import { TrainingService } from "./@modules/training/training.service"
 import { TrainingRepository } from "./@modules/training/training.repository"
 import { UserTrainingRepository } from "./@modules/user-training/user-training.repository"
 import { UserTrainingService } from "./@modules/user-training/user-training.service"
-import { UpdateImageController } from './@modules/update-image/update-image.controller';
+import { UpdateImageController } from "./@modules/update-image/update-image.controller"
+import { ExerciseService } from "./@modules/exercise/exercise.service"
+import { ExerciseRepository } from "./@modules/exercise/exercise.repository"
+import { ExerciseController } from "./@modules/exercise/exercise.controller"
+import { ExerciseTrainingRepository } from "./@modules/exercise-training/exercise-training.repository";
+import { ExerciseTrainingService } from "./@modules/exercise-training/exercise-training.service";
 
 @Module({
 	imports: [
@@ -37,7 +42,8 @@ import { UpdateImageController } from './@modules/update-image/update-image.cont
 		CreateAccountController,
 		UserController,
 		TrainingController,
-		UpdateImageController
+		UpdateImageController,
+		ExerciseController,
 	],
 	providers: [
 		{
@@ -57,6 +63,10 @@ import { UpdateImageController } from './@modules/update-image/update-image.cont
 		TrainingRepository,
 		UserTrainingRepository,
 		UserTrainingService,
+		ExerciseService,
+		ExerciseRepository,
+		ExerciseTrainingRepository,
+		ExerciseTrainingService,
 	],
 })
 export class AppModule { }
