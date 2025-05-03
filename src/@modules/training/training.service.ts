@@ -1,5 +1,6 @@
 import {
-    BadRequestException, Injectable, NotFoundException
+    BadRequestException, Injectable, NotFoundException,
+    UnauthorizedException
 } from "@nestjs/common"
 import { CreateInput, TrainingRepository } from "./training.repository"
 import { Payload, ValidateIdProps } from "@/@types"
@@ -8,7 +9,7 @@ import { Request } from "express"
 import { UpdateTrainingProps } from "@/schemas/edit-training-schema"
 import { ExerciseService } from "../exercise/exercise.service"
 import { ExerciseTrainingService } from "../exercise-training/exercise-training.service"
-import { Prisma } from "@prisma/client"
+import { Validate } from "@/utils/validate-request"
 
 const notFoundExceptionMessage = "Não foi possivel encontrar o usuário desejado"
 
@@ -104,9 +105,7 @@ export class TrainingService {
 
     async findManyByUserId(request: Request) {
 
-        if (!request.user) throw new NotFoundException("User not found")
-
-        const { sub: { id: userId } } = request.user as Payload
+        const userId = new Validate(request).getUserId()
 
         return await this.trainingRepository.findManyByUserId(userId)
     }

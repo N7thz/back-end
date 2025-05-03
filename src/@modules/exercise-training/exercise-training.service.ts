@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { ExerciseTrainingCreateInput, ExerciseTrainingRepository } from "./exercise-training.repository";
+import { Injectable } from "@nestjs/common"
+import { ExerciseTrainingCreateInput, ExerciseTrainingRepository } from "./exercise-training.repository"
 
 @Injectable()
 export class ExerciseTrainingService {

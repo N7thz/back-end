@@ -2,18 +2,8 @@ import { PrismaService } from "@/prisma/prisma.service"
 import { Injectable } from "@nestjs/common"
 import { Prisma } from "@prisma/client"
 
-export type FindByIdRequest = {
-    id: string
-    type?: "simple" | "complete"
-}
-
 type UserUpdateInput = Prisma.UserUpdateInput & {
     id: string
-}
-
-export type UpdateImageProps = {
-    id: string
-    imageUrl: string
 }
 
 @Injectable()
@@ -23,7 +13,10 @@ export class UserRepository {
 
     async create(userInput: Prisma.UserCreateInput) {
         return await this.prisma.user.create({
-            data: userInput
+            data: userInput,
+            include:{
+                image:true
+            }
         })
     }
 
@@ -32,17 +25,9 @@ export class UserRepository {
             where: {
                 id
             },
-            data: userInput
-        })
-    }
-
-    async updateImage({ id, imageUrl }: UpdateImageProps) {
-        return await this.prisma.user.update({
-            where: {
-                id
-            },
-            data: {
-                imageUrl
+            data: userInput,
+            include: {
+                image: true
             }
         })
     }
@@ -55,7 +40,10 @@ export class UserRepository {
         })
     }
 
-    async findById({ id, type }: FindByIdRequest) {
+    async findById({ id, type = "simple" }: {
+        id: string
+        type?: "simple" | "complete"
+    }) {
 
         if (type === "complete") {
             return await this.prisma.user.findUnique({
@@ -63,11 +51,11 @@ export class UserRepository {
                     id
                 },
                 include: {
-                    UserTraining: {
+                    userTraining: {
                         include: {
                             training: {
                                 include: {
-                                    exercises: true
+                                    exercises: true,
                                 }
                             }
                         }
@@ -83,6 +71,26 @@ export class UserRepository {
         })
     }
 
+    async findByIdWithImage(id: string) {
+        return await this.prisma.user.findUnique({
+            where: {
+                id
+            },
+            include: {
+                image: true,
+                userTraining: {
+                    include: {
+                        training: {
+                            include: {
+                                exercises: true,
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
     async findByEmail(email: string) {
         return await this.prisma.user.findUnique({
             where: {
@@ -92,6 +100,8 @@ export class UserRepository {
     }
 
     async findMany() {
-        return await this.prisma.user.findMany()
+        return await this.prisma.user.findMany({
+            include: { image: true }
+        })
     }
 }

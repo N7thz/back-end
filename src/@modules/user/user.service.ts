@@ -3,7 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from "@nestjs/common"
-import { FindByIdRequest, UserRepository } from "./user.repository"
+import { UserRepository } from "./user.repository"
 import {
 	UpdateUserProps, UpdateUserSchema
 } from "@/schemas/update-user-schema"
@@ -11,7 +11,7 @@ import { UserResponse } from "@/entities/user-response"
 import { Prisma } from "@prisma/client"
 import { Hash } from "@/entities/hash"
 import { Request } from "express"
-import { ValidateRequest } from "@/utils/validate-request"
+import { Validate } from "@/utils/validate-request"
 
 export type ValidateIdProps = {
 	id: string
@@ -54,11 +54,23 @@ export class UserService {
 		return new UserResponse(user)
 	}
 
-	async findById({ id, type }: FindByIdRequest) {
+	async findById({ id, type }: {
+		id: string
+		type?: "simple" | "complete"
+	}) {
 
-		await this.validateId({ id })
+		const user = await this.userRepository.findById({ id, type })
 
-		const user = this.userRepository.findById({ id, type })
+		if (!user) throw new NotFoundException(notFoundExceptionMessage)
+
+		return user
+	}
+	
+	async findByIdWithImage(id: string) {
+
+		const user = await this.userRepository.findByIdWithImage(id)
+
+		if (!user) throw new NotFoundException(notFoundExceptionMessage)
 
 		return user
 	}
@@ -82,18 +94,6 @@ export class UserService {
 		})
 
 		return new UserResponse(user)
-	}
-
-	async updateImage({ request, imageUrl }: UpdateImageProps) {
-
-		const { validate } = new ValidateRequest()
-
-		const id = validate(request)
-
-		return await this.userRepository.updateImage({
-			id,
-			imageUrl
-		})
 	}
 
 	async userAlreadyExist(email: string) {

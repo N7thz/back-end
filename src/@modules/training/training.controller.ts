@@ -3,8 +3,8 @@ import { TrainingService } from "./training.service"
 import { CreateTrainingProps } from "@/schemas/create-training-schema"
 import { Request } from "express"
 import { Acess, UserRole } from "@/common/decorators/acess.decorator"
-import { Payload } from "@/@types"
 import { UpdateTrainingProps } from "@/schemas/edit-training-schema"
+import { Validate } from "@/utils/validate-request"
 
 @Acess(UserRole.CLIENT, UserRole.ADMIN)
 @Controller("trainings")
@@ -18,9 +18,7 @@ export class TrainingController {
         @Req() request: Request
     ) {
 
-        if (!request.user) throw new UnauthorizedException("User not found")
-
-        const { sub: { id } } = request.user as Payload
+        const id = new Validate(request).getUserId()
 
         return await this.trainingService.create({
             userId: id,

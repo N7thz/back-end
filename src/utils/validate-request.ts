@@ -1,16 +1,23 @@
-import { Payload } from "@/@types"
+import { Payload } from "@/@types";
+import { UnauthorizedException } from "@nestjs/common"
 import { Request } from "express"
 
-export class ValidateRequest {
+export class Validate {
 
-    validate(request: Request) {
+    private userId: string
 
-        if (!request.user) {
-            throw new Error("Request body is required")
+    constructor(private request: Request) {
+
+        if (!this.request.user) {
+            throw new UnauthorizedException("Não foi possível encontrar o usuário");
         }
 
-        const { sub: { id } } = request.user as Payload
+        const { sub: { id } } = this.request.user as Payload
 
-        return id
+        this.userId = id
+    }
+
+    getUserId() {
+        return this.userId
     }
 }

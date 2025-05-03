@@ -20,12 +20,15 @@ import { TrainingService } from "./@modules/training/training.service"
 import { TrainingRepository } from "./@modules/training/training.repository"
 import { UserTrainingRepository } from "./@modules/user-training/user-training.repository"
 import { UserTrainingService } from "./@modules/user-training/user-training.service"
-import { UpdateImageController } from "./@modules/update-image/update-image.controller"
 import { ExerciseService } from "./@modules/exercise/exercise.service"
 import { ExerciseRepository } from "./@modules/exercise/exercise.repository"
 import { ExerciseController } from "./@modules/exercise/exercise.controller"
-import { ExerciseTrainingRepository } from "./@modules/exercise-training/exercise-training.repository";
-import { ExerciseTrainingService } from "./@modules/exercise-training/exercise-training.service";
+import { ExerciseTrainingRepository } from "./@modules/exercise-training/exercise-training.repository"
+import { ExerciseTrainingService } from "./@modules/exercise-training/exercise-training.service"
+import { UploadImageController } from "./@modules/upload-image/upload-image.controller"
+import { UploadImageService } from "./@modules/upload-image/upload-image.service"
+import { UploadImageRepository } from "./@modules/upload-image/upload-image.repository"
+import { SupabaseService } from "./@modules/supabase/supabase.service"
 
 @Module({
 	imports: [
@@ -42,8 +45,8 @@ import { ExerciseTrainingService } from "./@modules/exercise-training/exercise-t
 		CreateAccountController,
 		UserController,
 		TrainingController,
-		UpdateImageController,
 		ExerciseController,
+		UploadImageController,
 	],
 	providers: [
 		{
@@ -67,6 +70,9 @@ import { ExerciseTrainingService } from "./@modules/exercise-training/exercise-t
 		ExerciseRepository,
 		ExerciseTrainingRepository,
 		ExerciseTrainingService,
+		UploadImageService,
+		UploadImageRepository,
+		SupabaseService,
 	],
 })
 export class AppModule { }

@@ -4,7 +4,7 @@ import { AuthenticateBody as LoginProps } from "@/schemas/authenticate-schema"
 import { UserService } from "../user/user.service"
 import { Hash } from "@/entities/hash"
 import { Request } from "express"
-import { UserPayload } from "@/auth/jwt-strategy"
+import { Validate } from "@/utils/validate-request"
 
 const badRequestExceptionMessage = "Usuário ou senha incorretos"
 
@@ -40,12 +40,7 @@ export class AuthenticateService {
 
 	async authenticate(request: Request) {
 
-		if (!request.user)
-			throw new BadRequestException(
-				"Não foi possivel encontrar o usuário"
-			)
-
-		const { sub: { id } } = request.user as UserPayload
+		const id = new Validate(request).getUserId()
 
 		return await this.userService.findById({ id })
 	}

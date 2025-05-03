@@ -12,14 +12,27 @@ model User {
   id           String         @id @default(uuid())
   email        String         @unique
   password     String
-  imageUrl     String?        @map("image_url")
   isActive     Boolean        @default(true) @map("is_active")
   createdAt    DateTime       @default(now()) @map("create_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
+  imageId      String?        @map("image_id")
+  image        Image?         @relation(fields: [imageId], references: [id])
   role         Role           @default(CLIENT)
-  UserTraining UserTraining[]
+  userTraining UserTraining[]
 
   @@map("users")
+}
+
+model Image {
+  id       String @id @default(uuid())
+  imageUrl String @unique @map("image_url")
+  fileName String @unique @map("file_name")
+  path     String
+  fullPath String
+  userId   String @map("user_id")
+  User     User[]
+
+  @@map("images")
 }
 
 model UserTraining {
@@ -29,8 +42,8 @@ model UserTraining {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
 
-  @@map("user_trainings")
   @@unique([userId, trainingId])
+  @@map("user_trainings")
 }
 
 model Training {
@@ -53,8 +66,8 @@ model ExerciseTraining {
   training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
 
-  @@map("exercise_trainings")
   @@unique([trainingId, exerciseId])
+  @@map("exercise_trainings")
 }
 
 model Exercise {
